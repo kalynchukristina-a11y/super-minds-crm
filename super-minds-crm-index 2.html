@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="uk"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Super Minds Studio CRM</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#f6f7fb;color:#20212a}
+button,input,select{font:inherit}.app{display:flex;min-height:100vh}aside{width:230px;background:#171824;color:#fff;padding:22px 14px}.logo{font-size:21px;font-weight:900;margin:0 10px 28px}.logo b{color:#ff4fa3}
+nav button{width:100%;border:0;background:transparent;color:#cfd0dc;text-align:left;padding:13px;border-radius:10px;margin:3px 0;cursor:pointer}nav button.active,nav button:hover{background:#292a3b;color:#fff}
+main{flex:1;max-width:1300px;width:100%;margin:auto;padding:26px}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:20px}.top h1{margin:0}.btn{border:0;border-radius:10px;padding:11px 15px;background:#ff4fa3;color:#fff;font-weight:800;cursor:pointer}.btn.gray{background:#ececf3;color:#30313b}.search{padding:11px;border:1px solid #ddd;border-radius:10px}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.card,.panel{background:#fff;border:1px solid #e7e7ef;border-radius:15px;padding:18px}.card small{color:#737586}.card strong{display:block;font-size:28px;margin-top:7px}
+.panel{margin-top:18px}.panel h2{margin-top:0;font-size:18px}.row{display:grid;grid-template-columns:1.5fr 1fr .7fr auto;gap:14px;align-items:center;padding:13px 0;border-bottom:1px solid #eee}.muted{color:#737586;font-size:13px}.bar{height:8px;background:#eeeef4;border-radius:99px;overflow:hidden}.bar i{display:block;height:100%;background:#ff4fa3}.badge{display:inline-block;padding:5px 9px;border-radius:99px;font-size:11px;font-weight:800}.ok{background:#e6f7ed;color:#16703c}.red{background:#ffe4ea;color:#a12648}.amber{background:#fff2cf;color:#866000}
+table{width:100%;border-collapse:collapse}th,td{padding:10px;text-align:left;border-bottom:1px solid #eee;font-size:13px}.day{border:0;border-radius:8px;padding:7px 10px;cursor:pointer;background:#ffe4ea;color:#a12648}.day.y{background:#e6f7ed;color:#16703c}
+.modal{position:fixed;inset:0;background:#0008;display:grid;place-items:center;padding:18px}.modal>form{background:#fff;padding:22px;border-radius:16px;width:min(500px,100%)}.modal input,.modal select{display:block;width:100%;padding:11px;margin:9px 0;border:1px solid #ddd;border-radius:9px}.actions{display:flex;justify-content:flex-end;gap:8px;margin-top:14px}
+.hidden{display:none!important}.parent{max-width:650px;margin:40px auto;padding:20px}.parent h1{margin-bottom:4px}.notice{background:#fff6fb;border:1px solid #ffd5e8;padding:12px;border-radius:10px}
+@media(max-width:800px){aside{width:65px}.logo{font-size:0}.logo b{font-size:20px}nav button{font-size:0;text-align:center}main{padding:15px}.cards{grid-template-columns:1fr 1fr}.top{align-items:flex-start;flex-direction:column}.row{grid-template-columns:1fr}.search{width:100%}}
+</style></head><body>
+<div id="app" class="app"><aside><div class="logo">Super <b>Minds</b></div><nav>
+<button data-page="home" class="active">🏠 <span>Головна</span></button><button data-page="kids">👧 <span>Діти</span></button><button data-page="att">✅ <span>Відвідування</span></button><button data-page="pay">💰 <span>Оплати</span></button></nav></aside>
+<main>
+<section id="home"><div class="top"><h1>Super Minds Studio</h1><button class="btn" id="addBtn">+ Додати дитину</button></div><div class="cards"><div class="card"><small>Діти</small><strong id="s1">0</strong></div><div class="card"><small>Активні абонементи</small><strong id="s2">0</strong></div><div class="card"><small>Оплачено</small><strong id="s3">0 грн</strong></div><div class="card"><small>Борги</small><strong id="s4">0</strong></div></div><div class="panel"><h2>Абонементи</h2><div id="homeRows"></div></div></section>
+<section id="kids" class="hidden"><div class="top"><h1>Діти</h1><div><input id="search" class="search" placeholder="Пошук..."><button class="btn" id="addBtn2">+ Додати</button></div></div><div class="panel"><div id="kidRows"></div></div></section>
+<section id="att" class="hidden"><div class="top"><h1>Відвідування</h1></div><div class="panel"><table><thead><tr><th>Дитина</th><th>Група</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th></tr></thead><tbody id="attRows"></tbody></table></div></section>
+<section id="pay" class="hidden"><div class="top"><h1>Оплати</h1></div><div class="panel"><div id="payRows"></div></div></section>
+</main></div>
+<div id="modal" class="modal hidden"><form id="form"><h2>Додати дитину</h2><input name="name" required placeholder="Ім’я та прізвище"><input name="group" placeholder="Група"><input name="phone" placeholder="Телефон батьків"><input name="price" type="number" value="1400" placeholder="Вартість"><div class="actions"><button type="button" class="btn gray" id="cancel">Скасувати</button><button class="btn">Створити</button></div></form></div>
+<script>
+const KEY='super_minds_data';let kids=JSON.parse(localStorage.getItem(KEY)||'null')||[
+{id:'1',name:'Анна Коваль',group:'5–6 років',phone:'+380 67 000 00 01',price:1400,paid:true,lessons:[1,1,1,0,0,0,0,0]},
+{id:'2',name:'Марійка Петренко',group:'6–9 років',phone:'+380 67 000 00 02',price:1400,paid:true,lessons:[1,1,0,0,0,0,0,0]},
+{id:'3',name:'Софія Бондар',group:'6–9 років',phone:'+380 67 000 00 03',price:1400,paid:false,lessons:[1,0,0,0,0,0,0,0]}];
+const $=id=>document.getElementById(id), save=()=>localStorage.setItem(KEY,JSON.stringify(kids)), esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+function list(){let q=($('search')?.value||'').toLowerCase();return kids.filter(k=>k.name.toLowerCase().includes(q))}
+function render(){let l=list();$('s1').textContent=kids.length;$('s2').textContent=kids.filter(k=>k.lessons.filter(Boolean).length<8).length;$('s3').textContent=kids.filter(k=>k.paid).reduce((a,k)=>a+k.price,0).toLocaleString('uk-UA')+' грн';$('s4').textContent=kids.filter(k=>!k.paid).length;
+const row=k=>{let n=k.lessons.filter(Boolean).length;return `<div class="row"><div><b>${esc(k.name)}</b><div class="muted">${esc(k.group)}</div></div><div><b>${n}/8</b><div class="bar"><i style="width:${n*12.5}%"></i></div></div><span class="badge ${k.paid?'ok':'red'}">${k.paid?'Оплачено':'Борг'}</span><button class="btn gray" onclick="togglePay('${k.id}')">${k.paid?'Скасувати оплату':'Позначити оплату'}</button></div>`};$('homeRows').innerHTML=kids.map(row).join('');$('kidRows').innerHTML=l.map(row).join('');
+$('attRows').innerHTML=l.map(k=>`<tr><td><b>${esc(k.name)}</b></td><td>${esc(k.group)}</td>${k.lessons.map((v,i)=>`<td><button class="day ${v?'y':''}" onclick="toggleLesson('${k.id}',${i})">${v?'✓':'—'}</button></td>`).join('')}</tr>`).join('');
+$('payRows').innerHTML=l.map(k=>`<div class="row"><div><b>${esc(k.name)}</b><div class="muted">${k.lessons.filter(Boolean).length}/8 занять</div></div><b>${k.price.toLocaleString('uk-UA')} грн</b><span class="badge ${k.paid?'ok':'red'}">${k.paid?'Оплачено':'Борг'}</span><button class="btn" onclick="togglePay('${k.id}')">${k.paid?'Скасувати':'Оплатити'}</button></div>`).join('')}
+function toggleLesson(id,i){kids=kids.map(k=>k.id===id?{...k,lessons:k.lessons.map((v,j)=>j===i?+!v:v)}:k);save();render()}
+function togglePay(id){kids=kids.map(k=>k.id===id?{...k,paid:!k.paid}:k);save();render()}
+function openModal(){$('modal').classList.remove('hidden')}
+$('addBtn').onclick=openModal;$('addBtn2').onclick=openModal;$('cancel').onclick=()=>$('modal').classList.add('hidden');$('search').oninput=render;
+$('form').onsubmit=e=>{e.preventDefault();let f=new FormData(e.target);kids.push({id:Date.now().toString(),name:f.get('name'),group:f.get('group')||'Без групи',phone:f.get('phone')||'',price:+f.get('price')||1400,paid:true,lessons:Array(8).fill(0)});save();e.target.reset();$('modal').classList.add('hidden');render()};
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{document.querySelectorAll('main section').forEach(s=>s.classList.add('hidden'));$(b.dataset.page).classList.remove('hidden');document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));b.classList.add('active');render()});render();
+</script></body></html>
