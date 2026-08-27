@@ -1,42 +1,93 @@
 <!doctype html>
-<html lang="uk"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Super Minds Studio CRM</title>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Super Minds CRM</title>
 <style>
-*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#f6f7fb;color:#20212a}
-button,input,select{font:inherit}.app{display:flex;min-height:100vh}aside{width:230px;background:#171824;color:#fff;padding:22px 14px}.logo{font-size:21px;font-weight:900;margin:0 10px 28px}.logo b{color:#ff4fa3}
-nav button{width:100%;border:0;background:transparent;color:#cfd0dc;text-align:left;padding:13px;border-radius:10px;margin:3px 0;cursor:pointer}nav button.active,nav button:hover{background:#292a3b;color:#fff}
-main{flex:1;max-width:1300px;width:100%;margin:auto;padding:26px}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:20px}.top h1{margin:0}.btn{border:0;border-radius:10px;padding:11px 15px;background:#ff4fa3;color:#fff;font-weight:800;cursor:pointer}.btn.gray{background:#ececf3;color:#30313b}.search{padding:11px;border:1px solid #ddd;border-radius:10px}
-.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.card,.panel{background:#fff;border:1px solid #e7e7ef;border-radius:15px;padding:18px}.card small{color:#737586}.card strong{display:block;font-size:28px;margin-top:7px}
-.panel{margin-top:18px}.panel h2{margin-top:0;font-size:18px}.row{display:grid;grid-template-columns:1.5fr 1fr .7fr auto;gap:14px;align-items:center;padding:13px 0;border-bottom:1px solid #eee}.muted{color:#737586;font-size:13px}.bar{height:8px;background:#eeeef4;border-radius:99px;overflow:hidden}.bar i{display:block;height:100%;background:#ff4fa3}.badge{display:inline-block;padding:5px 9px;border-radius:99px;font-size:11px;font-weight:800}.ok{background:#e6f7ed;color:#16703c}.red{background:#ffe4ea;color:#a12648}.amber{background:#fff2cf;color:#866000}
-table{width:100%;border-collapse:collapse}th,td{padding:10px;text-align:left;border-bottom:1px solid #eee;font-size:13px}.day{border:0;border-radius:8px;padding:7px 10px;cursor:pointer;background:#ffe4ea;color:#a12648}.day.y{background:#e6f7ed;color:#16703c}
-.modal{position:fixed;inset:0;background:#0008;display:grid;place-items:center;padding:18px}.modal>form{background:#fff;padding:22px;border-radius:16px;width:min(500px,100%)}.modal input,.modal select{display:block;width:100%;padding:11px;margin:9px 0;border:1px solid #ddd;border-radius:9px}.actions{display:flex;justify-content:flex-end;gap:8px;margin-top:14px}
-.hidden{display:none!important}.parent{max-width:650px;margin:40px auto;padding:20px}.parent h1{margin-bottom:4px}.notice{background:#fff6fb;border:1px solid #ffd5e8;padding:12px;border-radius:10px}
-@media(max-width:800px){aside{width:65px}.logo{font-size:0}.logo b{font-size:20px}nav button{font-size:0;text-align:center}main{padding:15px}.cards{grid-template-columns:1fr 1fr}.top{align-items:flex-start;flex-direction:column}.row{grid-template-columns:1fr}.search{width:100%}}
-</style></head><body>
-<div id="app" class="app"><aside><div class="logo">Super <b>Minds</b></div><nav>
-<button data-page="home" class="active">🏠 <span>Головна</span></button><button data-page="kids">👧 <span>Діти</span></button><button data-page="att">✅ <span>Відвідування</span></button><button data-page="pay">💰 <span>Оплати</span></button></nav></aside>
+:root{--pink:#ec4899;--dark:#171824;--bg:#f6f7fb;--line:#e7e8ef;--text:#20212a;--muted:#737586}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button,input,select{font:inherit}.app{display:flex;min-height:100vh}aside{width:235px;background:var(--dark);color:#fff;padding:22px 14px}.logo{font-size:21px;font-weight:900;margin:0 10px 28px}.logo b{color:#ff58a8}
+nav button{display:block;width:100%;border:0;background:transparent;color:#cfd0dc;text-align:left;padding:13px;border-radius:10px;margin:3px 0;cursor:pointer}nav button.active,nav button:hover{background:#292a3b;color:#fff}
+main{flex:1;max-width:1350px;width:100%;margin:auto;padding:25px}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px}.top h1{margin:0;font-size:26px}.btn{border:0;border-radius:10px;padding:10px 15px;background:var(--pink);color:white;font-weight:800;cursor:pointer}.btn.gray{background:#ececf3;color:#30313b}.btn.danger{background:#ffe4ea;color:#a12648}
+.search,input,select{padding:10px 11px;border:1px solid #dfe1e9;border-radius:9px;background:#fff;outline:none}.search{min-width:240px}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.card,.panel{background:#fff;border:1px solid var(--line);border-radius:15px;padding:18px}.card small{color:var(--muted)}.card strong{display:block;font-size:28px;margin-top:6px}
+.panel{margin-top:17px}.panel h2{font-size:18px;margin:0 0 14px}.empty{text-align:center;color:var(--muted);padding:50px 15px}
+.row{display:grid;grid-template-columns:1.4fr .9fr .8fr .7fr auto;gap:13px;align-items:center;padding:13px 0;border-bottom:1px solid #eee}.row:last-child{border-bottom:0}.muted{color:var(--muted);font-size:13px}
+.badge{display:inline-block;padding:5px 9px;border-radius:99px;font-size:11px;font-weight:800}.ok{background:#e6f7ed;color:#16703c}.red{background:#ffe4ea;color:#a12648}.amber{background:#fff2cf;color:#866000}
+.progress{height:7px;background:#eeeef4;border-radius:99px;overflow:hidden;margin-top:6px}.progress i{display:block;height:100%;background:var(--pink)}
+table{width:100%;border-collapse:collapse}th,td{padding:10px;text-align:left;border-bottom:1px solid #eee;font-size:13px}.day{border:0;border-radius:8px;padding:7px 9px;cursor:pointer;background:#f0f0f5}.day.y{background:#e6f7ed;color:#16703c}
+.modal{position:fixed;inset:0;background:#0008;display:grid;place-items:center;padding:18px;z-index:5}.modal form{background:#fff;padding:22px;border-radius:16px;width:min(560px,100%);max-height:90vh;overflow:auto}.modal h2{margin-top:0}.field{margin:11px 0}.field label{display:block;font-size:13px;font-weight:700;margin-bottom:5px}.field input,.field select{width:100%}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}.actions{display:flex;justify-content:flex-end;gap:8px;margin-top:16px}.hidden{display:none!important}
+.kid-actions{display:flex;gap:6px;justify-content:flex-end}.iconbtn{border:0;background:#f0f0f5;border-radius:8px;padding:8px;cursor:pointer}.detail{display:grid;grid-template-columns:1fr 1fr;gap:15px}.statbox{padding:14px;border:1px solid var(--line);border-radius:12px;background:#fafafe}
+@media(max-width:850px){aside{width:65px}.logo{font-size:0}.logo b{font-size:20px}nav button{font-size:0;text-align:center}main{padding:15px}.cards{grid-template-columns:1fr 1fr}.row{grid-template-columns:1fr 1fr}.top{align-items:flex-start;flex-direction:column}.search{width:100%;min-width:0}.grid2,.detail{grid-template-columns:1fr}.kid-actions{justify-content:flex-start}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside><div class="logo">Super <b>Minds</b></div><nav>
+<button data-page="home" class="active">🏠 <span>Головна</span></button>
+<button data-page="kids">👧 <span>Учні</span></button>
+<button data-page="att">✅ <span>Відвідування</span></button>
+<button data-page="pay">💰 <span>Оплати</span></button>
+</nav></aside>
 <main>
-<section id="home"><div class="top"><h1>Super Minds Studio</h1><button class="btn" id="addBtn">+ Додати дитину</button></div><div class="cards"><div class="card"><small>Діти</small><strong id="s1">0</strong></div><div class="card"><small>Активні абонементи</small><strong id="s2">0</strong></div><div class="card"><small>Оплачено</small><strong id="s3">0 грн</strong></div><div class="card"><small>Борги</small><strong id="s4">0</strong></div></div><div class="panel"><h2>Абонементи</h2><div id="homeRows"></div></div></section>
-<section id="kids" class="hidden"><div class="top"><h1>Діти</h1><div><input id="search" class="search" placeholder="Пошук..."><button class="btn" id="addBtn2">+ Додати</button></div></div><div class="panel"><div id="kidRows"></div></div></section>
-<section id="att" class="hidden"><div class="top"><h1>Відвідування</h1></div><div class="panel"><table><thead><tr><th>Дитина</th><th>Група</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th></tr></thead><tbody id="attRows"></tbody></table></div></section>
+<section id="home"><div class="top"><h1>Super Minds Studio</h1><button class="btn" onclick="openAdd()">+ Додати учня</button></div>
+<div class="cards"><div class="card"><small>Активні учні</small><strong id="s1">0</strong></div><div class="card"><small>Активні абонементи</small><strong id="s2">0</strong></div><div class="card"><small>Оплачено</small><strong id="s3">0 грн</strong></div><div class="card"><small>Борги</small><strong id="s4">0</strong></div></div>
+<div class="panel"><h2>Поточні абонементи</h2><div id="homeRows"></div></div></section>
+
+<section id="kids" class="hidden"><div class="top"><h1>Учні</h1><div><input id="search" class="search" placeholder="Пошук учня..."> <button class="btn" onclick="openAdd()">+ Додати</button></div></div><div class="panel"><div id="kidRows"></div></div></section>
+
+<section id="att" class="hidden"><div class="top"><h1>Відвідування</h1><select id="groupFilter" onchange="render()"><option value="">Усі групи</option></select></div><div class="panel"><div id="attWrap"></div></div></section>
+
 <section id="pay" class="hidden"><div class="top"><h1>Оплати</h1></div><div class="panel"><div id="payRows"></div></div></section>
 </main></div>
-<div id="modal" class="modal hidden"><form id="form"><h2>Додати дитину</h2><input name="name" required placeholder="Ім’я та прізвище"><input name="group" placeholder="Група"><input name="phone" placeholder="Телефон батьків"><input name="price" type="number" value="1400" placeholder="Вартість"><div class="actions"><button type="button" class="btn gray" id="cancel">Скасувати</button><button class="btn">Створити</button></div></form></div>
+
+<div id="modal" class="modal hidden"><form id="studentForm"><h2 id="modalTitle">Додати учня</h2><input type="hidden" name="id">
+<div class="grid2"><div class="field"><label>Ім’я та прізвище *</label><input name="name" required></div><div class="field"><label>Група</label><input name="group" placeholder="Напр. 6–9 років"></div></div>
+<div class="grid2"><div class="field"><label>Телефон батьків</label><input name="phone" placeholder="+380..."></div><div class="field"><label>Викладач</label><input name="teacher"></div></div>
+<div class="grid2"><div class="field"><label>Сума пакета, грн *</label><input name="price" type="number" min="0" required></div><div class="field"><label>Кількість занять *</label><input name="total" type="number" min="1" required></div></div>
+<div class="grid2"><div class="field"><label>Дата початку</label><input name="start" type="date"></div><div class="field"><label>Оплата</label><select name="paid"><option value="1">Оплачено</option><option value="0">Не оплачено</option></select></div></div>
+<div class="actions"><button type="button" class="btn gray" onclick="closeModal()">Скасувати</button><button class="btn">Зберегти</button></div></form></div>
+
+<div id="detailModal" class="modal hidden"><form><h2 id="detailTitle"></h2><div id="detailBody"></div><div class="actions"><button type="button" class="btn gray" onclick="closeDetail()">Закрити</button></div></form></div>
+
 <script>
-const KEY='super_minds_data';let kids=JSON.parse(localStorage.getItem(KEY)||'null')||[
-{id:'1',name:'Анна Коваль',group:'5–6 років',phone:'+380 67 000 00 01',price:1400,paid:true,lessons:[1,1,1,0,0,0,0,0]},
-{id:'2',name:'Марійка Петренко',group:'6–9 років',phone:'+380 67 000 00 02',price:1400,paid:true,lessons:[1,1,0,0,0,0,0,0]},
-{id:'3',name:'Софія Бондар',group:'6–9 років',phone:'+380 67 000 00 03',price:1400,paid:false,lessons:[1,0,0,0,0,0,0,0]}];
-const $=id=>document.getElementById(id), save=()=>localStorage.setItem(KEY,JSON.stringify(kids)), esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
-function list(){let q=($('search')?.value||'').toLowerCase();return kids.filter(k=>k.name.toLowerCase().includes(q))}
-function render(){let l=list();$('s1').textContent=kids.length;$('s2').textContent=kids.filter(k=>k.lessons.filter(Boolean).length<8).length;$('s3').textContent=kids.filter(k=>k.paid).reduce((a,k)=>a+k.price,0).toLocaleString('uk-UA')+' грн';$('s4').textContent=kids.filter(k=>!k.paid).length;
-const row=k=>{let n=k.lessons.filter(Boolean).length;return `<div class="row"><div><b>${esc(k.name)}</b><div class="muted">${esc(k.group)}</div></div><div><b>${n}/8</b><div class="bar"><i style="width:${n*12.5}%"></i></div></div><span class="badge ${k.paid?'ok':'red'}">${k.paid?'Оплачено':'Борг'}</span><button class="btn gray" onclick="togglePay('${k.id}')">${k.paid?'Скасувати оплату':'Позначити оплату'}</button></div>`};$('homeRows').innerHTML=kids.map(row).join('');$('kidRows').innerHTML=l.map(row).join('');
-$('attRows').innerHTML=l.map(k=>`<tr><td><b>${esc(k.name)}</b></td><td>${esc(k.group)}</td>${k.lessons.map((v,i)=>`<td><button class="day ${v?'y':''}" onclick="toggleLesson('${k.id}',${i})">${v?'✓':'—'}</button></td>`).join('')}</tr>`).join('');
-$('payRows').innerHTML=l.map(k=>`<div class="row"><div><b>${esc(k.name)}</b><div class="muted">${k.lessons.filter(Boolean).length}/8 занять</div></div><b>${k.price.toLocaleString('uk-UA')} грн</b><span class="badge ${k.paid?'ok':'red'}">${k.paid?'Оплачено':'Борг'}</span><button class="btn" onclick="togglePay('${k.id}')">${k.paid?'Скасувати':'Оплатити'}</button></div>`).join('')}
-function toggleLesson(id,i){kids=kids.map(k=>k.id===id?{...k,lessons:k.lessons.map((v,j)=>j===i?+!v:v)}:k);save();render()}
-function togglePay(id){kids=kids.map(k=>k.id===id?{...k,paid:!k.paid}:k);save();render()}
-function openModal(){$('modal').classList.remove('hidden')}
-$('addBtn').onclick=openModal;$('addBtn2').onclick=openModal;$('cancel').onclick=()=>$('modal').classList.add('hidden');$('search').oninput=render;
-$('form').onsubmit=e=>{e.preventDefault();let f=new FormData(e.target);kids.push({id:Date.now().toString(),name:f.get('name'),group:f.get('group')||'Без групи',phone:f.get('phone')||'',price:+f.get('price')||1400,paid:true,lessons:Array(8).fill(0)});save();e.target.reset();$('modal').classList.add('hidden');render()};
-document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{document.querySelectorAll('main section').forEach(s=>s.classList.add('hidden'));$(b.dataset.page).classList.remove('hidden');document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));b.classList.add('active');render()});render();
-</script></body></html>
+const KEY='super_minds_crm_v2';
+let students=JSON.parse(localStorage.getItem(KEY)||'[]');
+const $=id=>document.getElementById(id);
+const save=()=>localStorage.setItem(KEY,JSON.stringify(students));
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+const used=s=>s.lessons.filter(Boolean).length;
+function groups(){return [...new Set(students.map(s=>s.group).filter(Boolean))].sort()}
+function filtered(){let q=($('search')?.value||'').toLowerCase(),g=$('groupFilter')?.value||'';return students.filter(s=>(!q||s.name.toLowerCase().includes(q))&&(!g||s.group===g))}
+function packageText(s){return `${used(s)}/${s.total}`}
+
+function render(){
+ $('s1').textContent=students.length;
+ $('s2').textContent=students.filter(s=>used(s)<s.total).length;
+ $('s3').textContent=students.filter(s=>s.paid).reduce((a,s)=>a+Number(s.price||0),0).toLocaleString('uk-UA')+' грн';
+ $('s4').textContent=students.filter(s=>!s.paid).length;
+ const row=s=>`<div class="row"><div><b>${esc(s.name)}</b><div class="muted">${esc(s.group||'Без групи')} ${s.teacher?'• '+esc(s.teacher):''}</div></div>
+ <div><b>${packageText(s)}</b><div class="progress"><i style="width:${Math.min(100,used(s)/s.total*100)}%"></i></div><div class="muted">залишилось ${Math.max(0,s.total-used(s))}</div></div>
+ <span class="badge ${s.paid?'ok':'red'}">${s.paid?'Оплачено':'Борг'}</span><b>${Number(s.price||0).toLocaleString('uk-UA')} грн</b>
+ <div class="kid-actions"><button class="iconbtn" onclick="openDetail('${s.id}')">👁</button><button class="iconbtn" onclick="openEdit('${s.id}')">✏️</button><button class="iconbtn" onclick="newPackage('${s.id}')">🎟️</button></div></div>`;
+ $('homeRows').innerHTML=students.length?students.map(row).join(''):'<div class="empty">База порожня. Натисни «Додати учня» і створи перший абонемент.</div>';
+ $('kidRows').innerHTML=filtered().length?filtered().map(row).join(''):'<div class="empty">Учнів поки немає.</div>';
+ let gf=$('groupFilter'), old=gf.value; gf.innerHTML='<option value="">Усі групи</option>'+groups().map(g=>`<option>${esc(g)}</option>`).join('');gf.value=groups().includes(old)?old:'';
+ let list=filtered();
+ $('attWrap').innerHTML=list.length?`<table><thead><tr><th>Учень</th><th>Група</th>${Array.from({length:Math.max(1,...list.map(s=>s.total))},(_,i)=>`<th>${i+1}</th>`).join('')}</tr></thead><tbody>${list.map(s=>`<tr><td><b>${esc(s.name)}</b><div class="muted">${packageText(s)}</div></td><td>${esc(s.group||'—')}</td>${s.lessons.map((v,i)=>`<td><button class="day ${v?'y':''}" onclick="toggleLesson('${s.id}',${i})">${v?'✓':'—'}</button></td>`).join('')}</tr>`).join('')}</tbody></table>`:'<div class="empty">Додай учнів, щоб вести відвідування.</div>';
+ $('payRows').innerHTML=list.map(s=>`<div class="row"><div><b>${esc(s.name)}</b><div class="muted">${packageText(s)} • ${esc(s.group||'Без групи')}</div></div><b>${Number(s.price||0).toLocaleString('uk-UA')} грн</b><span class="badge ${s.paid?'ok':'red'}">${s.paid?'Оплачено':'Борг'}</span><button class="btn ${s.paid?'gray':''}" onclick="togglePay('${s.id}')">${s.paid?'Скасувати':'Позначити оплату'}</button><span></span></div>`).join('')||'<div class="empty">Оплат ще немає.</div>';
+}
+function openAdd(){ $('modalTitle').textContent='Додати учня'; $('studentForm').reset();$('studentForm').id.value='';$('studentForm').price.value='';$('studentForm').total.value='8';$('studentForm').start.value=new Date().toISOString().slice(0,10);$('modal').classList.remove('hidden')}
+function openEdit(id){let s=students.find(x=>x.id===id);if(!s)return;$('modalTitle').textContent='Редагувати учня';let f=$('studentForm');for(let k of ['id','name','group','phone','teacher','price','total','start','paid'])if(f[k])f[k].value=s[k]??'';$('modal').classList.remove('hidden')}
+function closeModal(){$('modal').classList.add('hidden')}
+$('studentForm').onsubmit=e=>{e.preventDefault();let f=new FormData(e.target),id=f.get('id');let obj={id:id||Date.now().toString(),name:f.get('name'),group:f.get('group'),phone:f.get('phone'),teacher:f.get('teacher'),price:+f.get('price')||0,total:Math.max(1,+f.get('total')||8),start:f.get('start'),paid:f.get('paid')==='1',lessons:Array(Math.max(1,+f.get('total')||8)).fill(0)};if(id){let old=students.find(s=>s.id===id);obj.lessons=old.lessons.slice(0,obj.total);while(obj.lessons.length<obj.total)obj.lessons.push(0);students=students.map(s=>s.id===id?obj:s)}else students.push(obj);save();closeModal();render()};
+function toggleLesson(id,i){students=students.map(s=>s.id===id?{...s,lessons:s.lessons.map((v,j)=>j===i?+!v:v)}:s);save();render()}
+function togglePay(id){students=students.map(s=>s.id===id?{...s,paid:!s.paid}:s);save();render()}
+function newPackage(id){let s=students.find(x=>x.id===id);if(!s)return;let total=prompt('Скільки занять у новому пакеті?',s.total);if(total===null)return;total=Math.max(1,+total||8);let price=prompt('Сума нового пакета, грн?',s.price);if(price===null)return;students=students.map(x=>x.id===id?{...x,total,price:+price||0,paid:true,start:new Date().toISOString().slice(0,10),lessons:Array(total).fill(0)}:x);save();render()}
+function openDetail(id){let s=students.find(x=>x.id===id);if(!s)return;$('detailTitle').textContent=s.name;$('detailBody').innerHTML=`<div class="detail"><div class="statbox"><div class="muted">Абонемент</div><b>${packageText(s)}</b><div class="muted">Залишилось ${Math.max(0,s.total-used(s))} занять</div></div><div class="statbox"><div class="muted">Оплата</div><b>${Number(s.price).toLocaleString('uk-UA')} грн</b><div class="badge ${s.paid?'ok':'red'}">${s.paid?'Оплачено':'Борг'}</div></div><div class="statbox"><div class="muted">Група</div><b>${esc(s.group||'—')}</b></div><div class="statbox"><div class="muted">Телефон</div><b>${esc(s.phone||'—')}</b></div></div>`;$('detailModal').classList.remove('hidden')}
+function closeDetail(){$('detailModal').classList.add('hidden')}
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{document.querySelectorAll('main section').forEach(s=>s.classList.add('hidden'));$(b.dataset.page).classList.remove('hidden');document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));b.classList.add('active');render()});
+$('search').oninput=render;render();
+</script>
+</body></html>
