@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ostashek — склад та облік</title>
+<style>
+:root{--bg:#f4eee5;--card:#fffdf9;--dark:#332d28;--text:#302b27;--muted:#8b7d71;--line:#e5d9ca;--accent:#9a6046;--accent2:#c9936e;--ok:#587259;--bad:#a85b51}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}.app{min-height:100vh;display:flex}
+aside{position:fixed;left:0;top:0;bottom:0;width:245px;background:var(--dark);color:#fff;padding:20px 14px}.logo{font-weight:900;font-size:22px;padding:8px 10px 28px;letter-spacing:.4px}.logo b{color:#d9a17b}.logo small{display:block;font-size:10px;color:#c9b9aa;letter-spacing:2px;margin-top:4px;font-weight:500}.nav{display:grid;gap:4px}.nav button{border:0;background:transparent;color:#d8cbc0;text-align:left;padding:12px 13px;border-radius:10px;font-size:14px}.nav button:hover,.nav button.active{background:#4a4038;color:#fff}.nav button.active{box-shadow:inset 3px 0 var(--accent2)}
+main{margin-left:245px;width:calc(100% - 245px);padding:30px}.top{display:flex;justify-content:space-between;gap:15px;align-items:center;margin-bottom:22px}.top h1{margin:0;font-size:28px}.top p{margin:5px 0 0;color:var(--muted);font-size:13px}.actions{display:flex;gap:8px;flex-wrap:wrap}.btn{border:1px solid var(--line);background:var(--card);padding:10px 14px;border-radius:9px;color:var(--text);cursor:pointer}.btn.primary{background:var(--accent);border-color:var(--accent);color:white}
+.page{display:none}.page.active{display:block}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}.card{background:var(--card);border:1px solid var(--line);border-radius:15px;padding:18px;box-shadow:0 8px 24px #654c3710}.metric small{color:var(--muted)}.metric strong{display:block;font-size:25px;margin:7px 0}.metric span{font-size:12px;color:var(--ok)}
+.section{margin-top:18px}.sectionhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.sectionhead h2{margin:0;font-size:18px}.toolbar{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:12px}.search,.select,input,select,textarea{border:1px solid var(--line);background:var(--card);border-radius:9px;padding:10px 12px;outline:none}.search{min-width:250px;flex:1}.tablewrap{overflow:auto;border:1px solid var(--line);border-radius:14px;background:var(--card)}table{width:100%;border-collapse:collapse;min-width:760px}th,td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);font-size:13px}th{background:#faf5ee;color:var(--muted);font-weight:600}tr:last-child td{border-bottom:0}.badge{padding:5px 8px;border-radius:20px;font-size:11px;background:#eee5da}.ok{background:#e8efe5;color:var(--ok)}.bad{background:#f4e4e0;color:var(--bad)}.empty{padding:42px;text-align:center;color:var(--muted)}
+.catgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:13px}.cat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}.cat b{display:block;margin-bottom:6px}.cat span{font-size:12px;color:var(--muted)}
+.modal{display:none;position:fixed;inset:0;background:#241c1680;align-items:center;justify-content:center;padding:20px;z-index:10}.modal.show{display:flex}.box{width:min(650px,100%);max-height:92vh;overflow:auto;background:var(--card);border-radius:16px;padding:22px}.head{display:flex;justify-content:space-between;align-items:center}.head h2{margin:0}.close{border:0;background:transparent;font-size:25px}.form{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}.field{display:grid;gap:6px}.field.full{grid-column:1/-1}.field label{font-size:12px;color:var(--muted)}.foot{grid-column:1/-1;display:flex;justify-content:flex-end;gap:8px;margin-top:8px}.note{padding:12px;border-radius:10px;background:#f8eee5;color:#68574b;font-size:13px}
+@media(max-width:900px){aside{width:72px}.logo small,.logo span,.nav span{display:none}.logo{font-size:25px}.main{margin-left:72px;width:calc(100% - 72px);padding:20px}.grid,.catgrid{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside>
+<div class="logo">O<b>STASHEK</b><small>СКЛАД • ОПТ • ОБЛІК</small></div>
+<div class="nav">
+<button class="active" data-page="home">▦ <span>Головна</span></button>
+<button data-page="products">▤ <span>Товари</span></button>
+<button data-page="categories">▦ <span>Категорії</span></button>
+<button data-page="stock">▥ <span>Склад</span></button>
+<button data-page="sales">₴ <span>Продажі</span></button>
+<button data-page="purchases">↓ <span>Закупівлі</span></button>
+<button data-page="documents">▣ <span>Документи</span></button>
+<button data-page="clients">♙ <span>Клієнти</span></button>
+<button data-page="suppliers">⌂ <span>Постачальники</span></button>
+<button data-page="finance">◎ <span>Фінанси</span></button>
+<button data-page="reports">▥ <span>Звіти</span></button>
+</div>
+</aside>
+
+<main>
+<div class="top"><div><h1 id="title">Головна</h1><p id="sub">Ostashek — оптовий склад</p></div><div class="actions"><button class="btn" onclick="openModal('product')">+ Товар</button><button class="btn" onclick="openModal('purchase')">+ Прихід</button><button class="btn primary" onclick="openModal('sale')">+ Продаж</button></div></div>
+
+<section id="home" class="page active">
+<div class="grid">
+<div class="card metric"><small>Вартість складу</small><strong id="mStock">0 грн</strong><span>за закупівельною ціною</span></div>
+<div class="card metric"><small>Продажі</small><strong id="mSales">0 грн</strong><span>за весь період</span></div>
+<div class="card metric"><small>Прибуток</small><strong id="mProfit">0 грн</strong><span>орієнтовний</span></div>
+<div class="card metric"><small>Борги клієнтів</small><strong id="mDebt">0 грн</strong><span>до отримання</span></div>
+</div>
+<div class="section"><div class="sectionhead"><h2>Швидкі дії</h2></div><div class="grid">
+<div class="card"><b>📦 Додати товар</b><p style="color:var(--muted);font-size:13px">Назва, артикул, категорія, ціни та залишок.</p><button class="btn primary" onclick="openModal('product')">Додати</button></div>
+<div class="card"><b>🚚 Закупівля</b><p style="color:var(--muted);font-size:13px">Прихід автоматично збільшує залишок.</p><button class="btn" onclick="openModal('purchase')">Додати</button></div>
+<div class="card"><b>🧾 Продаж</b><p style="color:var(--muted);font-size:13px">Продаж автоматично списує товар зі складу.</p><button class="btn" onclick="openModal('sale')">Додати</button></div>
+<div class="card"><b>📑 Документ</b><p style="color:var(--muted);font-size:13px">Зберегти реквізити та файл накладної.</p><button class="btn" onclick="openModal('document')">Додати</button></div>
+</div></div>
+</section>
+
+<section id="products" class="page"><div class="toolbar"><input id="search" class="search" placeholder="Пошук товару..." oninput="renderProducts()"><button class="btn primary" onclick="openModal('product')">+ Додати товар</button></div><div class="tablewrap"><table><thead><tr><th>Товар</th><th>Артикул</th><th>Категорія</th><th>Закупівля</th><th>Опт</th><th>Залишок</th><th>Мін.</th></tr></thead><tbody id="productsBody"></tbody></table></div></section>
+
+<section id="categories" class="page"><div class="sectionhead"><h2>Категорії товарів</h2><button class="btn primary" onclick="openModal('category')">+ Категорія</button></div><div class="note">Готові категорії можна змінювати та доповнювати під твій асортимент.</div><div class="section catgrid" id="categoryGrid"></div></section>
+
+<section id="stock" class="page"><div class="grid"><div class="card metric"><small>Позицій</small><strong id="sItems">0</strong></div><div class="card metric"><small>Одиниць</small><strong id="sQty">0</strong></div><div class="card metric"><small>Мало товару</small><strong id="sLow">0</strong></div><div class="card metric"><small>Вартість</small><strong id="sValue">0 грн</strong></div></div><div class="section tablewrap"><table><thead><tr><th>Товар</th><th>Залишок</th><th>Мін.</th><th>Статус</th><th>Вартість</th></tr></thead><tbody id="stockBody"></tbody></table></div></section>
+
+<section id="sales" class="page"><div class="toolbar"><button class="btn primary" onclick="openModal('sale')">+ Новий продаж</button></div><div class="tablewrap"><table><thead><tr><th>Дата</th><th>Клієнт</th><th>Товар</th><th>К-сть</th><th>Сума</th><th>Оплачено</th></tr></thead><tbody id="salesBody"></tbody></table></div></section>
+
+<section id="purchases" class="page"><div class="toolbar"><button class="btn primary" onclick="openModal('purchase')">+ Нова закупівля</button></div><div class="tablewrap"><table><thead><tr><th>Дата</th><th>Постачальник</th><th>Товар</th><th>К-сть</th><th>Сума</th><th>Оплачено</th></tr></thead><tbody id="purchasesBody"></tbody></table></div></section>
+
+<section id="documents" class="page"><div class="sectionhead"><div><h2>Документи</h2><p class="title p">Первинні документи та завантажені файли</p></div><button class="btn primary" onclick="openModal('document')">+ Документ</button></div><div class="note"><b>Увага:</b> цей модуль зберігає реквізити та файли. Для юридично значущого електронного документа потрібні передбачені законодавством реквізити та належний електронний підпис; податкові накладні мають окремий порядок електронного складання і реєстрації.</div><div class="section tablewrap"><table><thead><tr><th>Дата</th><th>№</th><th>Тип</th><th>Контрагент</th><th>Сума</th><th>Файл</th></tr></thead><tbody id="documentsBody"></tbody></table></div></section>
+
+<section id="clients" class="page"><div class="toolbar"><button class="btn primary" onclick="openModal('client')">+ Клієнт</button></div><div class="tablewrap"><table><thead><tr><th>Клієнт</th><th>Телефон</th><th>Місто</th><th>Продажі</th><th>Борг</th></tr></thead><tbody id="clientsBody"></tbody></table></div></section>
+
+<section id="suppliers" class="page"><div class="toolbar"><button class="btn primary" onclick="openModal('supplier')">+ Постачальник</button></div><div class="tablewrap"><table><thead><tr><th>Постачальник</th><th>Телефон</th><th>Контакт</th><th>Закупівлі</th></tr></thead><tbody id="suppliersBody"></tbody></table></div></section>
+
+<section id="finance" class="page"><div class="grid"><div class="card metric"><small>Надійшло</small><strong id="finIn">0 грн</strong></div><div class="card metric"><small>Витрачено</small><strong id="finOut">0 грн</strong></div><div class="card metric"><small>Чистий рух</small><strong id="finNet">0 грн</strong></div><div class="card metric"><small>Борги</small><strong id="finDebt">0 грн</strong></div></div></section>
+
+<section id="reports" class="page"><div class="grid"><div class="card"><b>Склад</b><p>Залишки та низькі запаси.</p><button class="btn" onclick="showPage('stock')">Відкрити</button></div><div class="card"><b>Продажі</b><p>Виручка та прибуток.</p><button class="btn" onclick="showPage('sales')">Відкрити</button></div><div class="card"><b>Клієнти</b><p>Продажі та заборгованість.</p><button class="btn" onclick="showPage('clients')">Відкрити</button></div><div class="card"><b>Документи</b><p>Первинні документи.</p><button class="btn" onclick="showPage('documents')">Відкрити</button></div></div></section>
+</main></div>
+
+<div class="modal" id="modal"><div class="box"><div class="head"><h2 id="modalTitle"></h2><button class="close" onclick="closeModal()">×</button></div><div id="modalBody"></div></div></div>
+
+<script>
+const KEY='ostashek_clean_v1';
+let db=JSON.parse(localStorage.getItem(KEY)||'null')||{
+ products:[],sales:[],purchases:[],clients:[],suppliers:[],
+ categories:[
+ {id:1,name:'Товари для кухні',note:'Кухонне приладдя'},
+ {id:2,name:'Товари для дому',note:'Господарські товари'},
+ {id:3,name:'Віники',note:'Віники та щітки'},
+ {id:4,name:'Лопати',note:'Лопати та інвентар'},
+ {id:5,name:'Інструменти',note:'Ручний інструмент'},
+ {id:6,name:'Товари для прибирання',note:'Швабри, губки, відра'},
+ {id:7,name:'Сезонні товари',note:'Сезонний асортимент'},
+ {id:8,name:'Інше',note:'Інші товари'}
+ ],documents:[]
+};
+db.categories=db.categories||[];db.documents=db.documents||[];
+const $=id=>document.getElementById(id);
+const money=n=>Number(n||0).toLocaleString('uk-UA')+' грн';
+const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
+const save=()=>localStorage.setItem(KEY,JSON.stringify(db));
+const today=()=>new Date().toISOString().slice(0,10);
+function showPage(id){
+ document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));$(id).classList.add('active');
+ document.querySelectorAll('.nav button').forEach(x=>x.classList.toggle('active',x.dataset.page===id));
+ const map={home:['Головна','Ostashek — оптовий склад'],products:['Товари','Каталог та ціни'],categories:['Категорії','Асортимент складу'],stock:['Склад','Залишки та контроль запасів'],sales:['Продажі','Оптові замовлення'],purchases:['Закупівлі','Прихід товару'],documents:['Документи','Первинні документи'],clients:['Клієнти','Оптові покупці'],suppliers:['Постачальники','Контрагенти'],finance:['Фінанси','Рух коштів'],reports:['Звіти','Аналітика']};
+ $('title').textContent=map[id][0];$('sub').textContent=map[id][1];
+}
+document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>showPage(b.dataset.page));
+
+function openModal(type){
+ $('modal').classList.add('show');
+ if(type==='product'){
+  $('modalTitle').textContent='Новий товар';
+  $('modalBody').innerHTML=`<form class="form" onsubmit="addProduct(event)">
+  <div class="field full"><label>Назва товару *</label><input name="name" required placeholder="Наприклад: Віник пластиковий"></div>
+  <div class="field"><label>Артикул</label><input name="sku"></div>
+  <div class="field"><label>Категорія</label><select name="cat">${db.categories.map(c=>`<option>${esc(c.name)}</option>`).join('')}</select></div>
+  <div class="field"><label>Ціна закупівлі, грн *</label><input name="buy" type="number" min="0" step=".01" required></div>
+  <div class="field"><label>Оптова ціна, грн *</label><input name="price" type="number" min="0" step=".01" required></div>
+  <div class="field"><label>Початковий залишок</label><input name="qty" type="number" min="0" value="0"></div>
+  <div class="field"><label>Мінімальний залишок</label><input name="min" type="number" min="0" value="0"></div>
+  <div class="foot"><button type="button" class="btn" onclick="closeModal()">Скасувати</button><button class="btn primary">Зберегти</button></div></form>`;
+ }
+ if(type==='category'){
+  $('modalTitle').textContent='Нова категорія';
+  $('modalBody').innerHTML=`<form class="form" onsubmit="addCategory(event)"><div class="field full"><label>Назва *</label><input name="name" required placeholder="Товари для саду"></div><div class="field full"><label>Опис</label><input name="note"></div><div class="foot"><button type="button" class="btn" onclick="closeModal()">Скасувати</button><button class="btn primary">Зберегти</button></div></form>`;
+ }
+ if(type==='client'){
+  $('modalTitle').textContent='Новий клієнт';$('modalBody').innerHTML=`<form class="form" onsubmit="addClient(event)"><div class="field full"><label>Назва / ПІБ *</label><input name="name" required></div><div class="field"><label>Телефон</label><input name="phone"></div><div class="field"><label>Місто</label><input name="city"></div><div class="foot"><button type="button" class="btn" onclick="closeModal()">Скасувати</button><button class="btn primary">Зберегти</button></div></form>`;
+ }
+ if(type==='supplier'){
+  $('modalTitle').textContent='Новий постачальник';$('modalBody').innerHTML=`<form class="form" onsubmit="addSupplier(event)"><div class="field full"><label>Назва *</label><input name="name" required></div><div class="field"><label>Телефон</label><input name="phone"></div><div class="field"><label>Контактна особа</label><input name="contact"></div><div class="foot"><button type="button" class="btn" onclick="closeModal()">Скасувати</button><button class="btn primary">Зберегти</button></div></form>`;
+ }
+ if(type==='sale'){
+  $('modalTitle').textContent='Новий продаж';
+  $('modalBody').innerHTML=`<form class="form" onsubmit="addSale(event)"><div class="field"><label>Клієнт *</label><select name="client" required>${db.clients.length?db.clients.map(c=>`<option value="${c.id}">${esc(c.name)}</option>`).join(''):'<option value="">Додайте клієнта</option>'}</select></div><div class="field"><label>Товар *</label><select name="product" id="saleProduct" required>${db.products.length?db.products.map(p=>`<option value="${p.id}">${esc(p.name)} — ${money(p.price)}</option>`).join(''):'<option value="">Додайте товар</option>'}</select></div><div class="field"><label>Кількість *</label><input name="qty" type="number" min="1" value="1" required></div><div class="field"><label>Ціна продажу, грн *</label><input name="price" type="number" min="0" step=".01" required></div><div class="field"><label>Оплачено, грн</label><input name="paid" type="number" min="0" step=".01" value="0"></div><div class="field"><label>Дата</label><input name="date" type="date" value="${today()}"></div><div class="foot"><button type="button" class="btn" onclick="closeModal()">Скасувати</button><button class="btn primary">Провести продаж</button></div></form>`;
+  const p=db.products[0];if(p)document.querySelector('[name=price]').value=p.price;
+ }
+ if(type==='purchase'){
+  $('modalTitle').textContent='Нова закупівля';
+  $('modalBody').innerHTML=`<form class="form" onsubmit="addPurchase(event)"><div class="field"><label>Постачальник</label><select name="supplier"><option value="">Без постачальника</option>${db.suppliers.map(s=>`<option value="${s.id}">${esc(s.name)}</option>`).join('')}</select></div><div class="field"><label>Товар *</label><select name="product" required>${db.products.map(p=>`<option value="${p.id}">${esc(p.name)}</option>`).join('')}</select></div><div class="field"><label>Кількість *</label><input name="qty" type="number" min="1" value="1" required></div><div class="field"><label>Ціна закупівлі, грн *</label><input name="price" type="number" min="0" step=".01" required></div><div class="field"><label>Оплачено, грн</label><input name="paid" type="number" min="0" step=".01" value="0"></div><div class="field"><label>Дата</label><input name="date" type="date" value="${today()}"></div><div class="foot"><button type="button" class="btn" onclick="closeModal()">Скасувати</button><button class="btn primary">Провести прихід</button></div></form>`;
+ }
+ if(type==='document'){
+  $('modalTitle').textContent='Новий первинний документ';
+  $('modalBody').innerHTML=`<form class="form" onsubmit="addDocument(event)"><div class="field"><label>Тип документа *</label><select name="type"><option>Видаткова накладна</option><option>Прибуткова накладна</option><option>Акт приймання-передачі</option><option>Рахунок</option><option>ТТН</option><option>Інший первинний документ</option></select></div><div class="field"><label>№ документа *</label><input name="number" required></div><div class="field"><label>Дата *</label><input name="date" type="date" value="${today()}" required></div><div class="field"><label>Контрагент</label><input name="party"></div><div class="field"><label>ЄДРПОУ / РНОКПП</label><input name="taxid"></div><div class="field"><label>Сума, грн</label><input name="amount" type="number" min="0" step=".01"></div><div class="field full"><label>Файл</label><input name="file" type="file" accept=".pdf,.jpg,.jpeg,.png,.xml"></div><div class="field full"><label>Примітка</label><textarea name="note"></textarea></div><div class="foot"><button type="button" class="btn" onclick="closeModal()">Скасувати</button><button class="btn primary">Зберегти</button></div></form>`;
+ }
+}
+function closeModal(){$('modal').classList.remove('show')}
+function addProduct(e){e.preventDefault();let f=new FormData(e.target);db.products.push({id:Date.now(),name:f.get('name'),sku:f.get('sku'),cat:f.get('cat'),buy:+f.get('buy'),price:+f.get('price'),qty:+f.get('qty'),min:+f.get('min')});save();closeModal()}
+function addCategory(e){e.preventDefault();let f=new FormData(e.target);db.categories.push({id:Date.now(),name:f.get('name'),note:f.get('note')});save();closeModal()}
+function addClient(e){e.preventDefault();let f=new FormData(e.target);db.clients.push({id:Date.now(),name:f.get('name'),phone:f.get('phone'),city:f.get('city')});save();closeModal()}
+function addSupplier(e){e.preventDefault();let f=new FormData(e.target);db.suppliers.push({id:Date.now(),name:f.get('name'),phone:f.get('phone'),contact:f.get('contact')});save();closeModal()}
+function addSale(e){e.preventDefault();let f=new FormData(e.target),p=db.products.find(x=>x.id==f.get('product')),q=+f.get('qty'),price=+f.get('price');if(!p)return alert('Додайте товар.');if(p.qty<q)return alert('Недостатньо товару на складі.');p.qty-=q;db.sales.push({id:Date.now(),date:f.get('date'),client:+f.get('client'),product:p.id,qty:q,price,paid:+f.get('paid')||0});save();closeModal()}
+function addPurchase(e){e.preventDefault();let f=new FormData(e.target),p=db.products.find(x=>x.id==f.get('product')),q=+f.get('qty'),price=+f.get('price');if(!p)return alert('Додайте товар.');p.qty+=q;p.buy=price;db.purchases.push({id:Date.now(),date:f.get('date'),supplier:+f.get('supplier')||null,product:p.id,qty:q,price,paid:+f.get('paid')||0});save();closeModal()}
+function addDocument(e){e.preventDefault();let f=new FormData(e.target),file=f.get('file');db.documents.push({id:Date.now(),type:f.get('type'),number:f.get('number'),date:f.get('date'),party:f.get('party'),taxid:f.get('taxid'),amount:+f.get('amount')||0,file:file?.name||'',note:f.get('note')});save();closeModal()}
+function renderProducts(){let q=($('search')?.value||'').toLowerCase();$('productsBody').innerHTML=db.products.filter(p=>(p.name+' '+p.sku+' '+p.cat).toLowerCase().includes(q)).map(p=>`<tr><td><b>${esc(p.name)}</b></td><td>${esc(p.sku)}</td><td>${esc(p.cat)}</td><td>${money(p.buy)}</td><td>${money(p.price)}</td><td><b>${p.qty}</b></td><td>${p.min}</td></tr>`).join('')||'<tr><td colspan="7"><div class="empty">Товарів ще немає.</div></td></tr>'}
+function renderAll(){
+ let stock=db.products.reduce((a,p)=>a+p.qty*p.buy,0),sales=db.sales.reduce((a,x)=>a+x.qty*x.price,0),cost=db.sales.reduce((a,x)=>a+x.qty*(db.products.find(p=>p.id===x.product)?.buy||0),0),debt=db.sales.reduce((a,x)=>a+Math.max(0,x.qty*x.price-x.paid),0);
+ $('mStock').textContent=money(stock);$('mSales').textContent=money(sales);$('mProfit').textContent=money(sales-cost);$('mDebt').textContent=money(debt);
+ $('sItems').textContent=db.products.length;$('sQty').textContent=db.products.reduce((a,p)=>a+p.qty,0);$('sLow').textContent=db.products.filter(p=>p.qty<=p.min).length;$('sValue').textContent=money(stock);
+ $('finIn').textContent=money(db.sales.reduce((a,x)=>a+x.paid,0));$('finOut').textContent=money(db.purchases.reduce((a,x)=>a+x.paid,0));$('finNet').textContent=money(db.sales.reduce((a,x)=>a+x.paid,0)-db.purchases.reduce((a,x)=>a+x.paid,0));$('finDebt').textContent=money(debt);
+ renderProducts();
+ $('categoryGrid').innerHTML=db.categories.map(c=>`<div class="cat"><b>${esc(c.name)}</b><span>${db.products.filter(p=>p.cat===c.name).length} товарів</span><p style="font-size:12px;color:var(--muted)">${esc(c.note||'')}</p></div>`).join('');
+ $('stockBody').innerHTML=db.products.map(p=>`<tr><td><b>${esc(p.name)}</b></td><td>${p.qty}</td><td>${p.min}</td><td><span class="badge ${p.qty<=p.min?'bad':'ok'}">${p.qty<=p.min?'Потрібно замовити':'В нормі'}</span></td><td>${money(p.qty*p.buy)}</td></tr>`).join('')||'<tr><td colspan="5"><div class="empty">Склад порожній.</div></td></tr>';
+ $('salesBody').innerHTML=db.sales.slice().reverse().map(x=>{let c=db.clients.find(c=>c.id===x.client),p=db.products.find(p=>p.id===x.product),sum=x.qty*x.price;return `<tr><td>${x.date}</td><td>${esc(c?.name||'—')}</td><td>${esc(p?.name||'—')}</td><td>${x.qty}</td><td>${money(sum)}</td><td>${money(x.paid)}</td></tr>`}).join('')||'<tr><td colspan="6"><div class="empty">Продажів ще немає.</div></td></tr>';
+ $('purchasesBody').innerHTML=db.purchases.slice().reverse().map(x=>{let s=db.suppliers.find(s=>s.id===x.supplier),p=db.products.find(p=>p.id===x.product);return `<tr><td>${x.date}</td><td>${esc(s?.name||'—')}</td><td>${esc(p?.name||'—')}</td><td>${x.qty}</td><td>${money(x.qty*x.price)}</td><td>${money(x.paid)}</td></tr>`}).join('')||'<tr><td colspan="6"><div class="empty">Закупівель ще немає.</div></td></tr>';
+ $('documentsBody').innerHTML=db.documents.slice().reverse().map(d=>`<tr><td>${d.date}</td><td><b>${esc(d.number)}</b></td><td>${esc(d.type)}</td><td>${esc(d.party||'—')}<div class="muted">${esc(d.taxid||'')}</div></td><td>${money(d.amount)}</td><td>${esc(d.file||'—')}</td></tr>`).join('')||'<tr><td colspan="6"><div class="empty">Документів ще немає.</div></td></tr>';
+ $('clientsBody').innerHTML=db.clients.map(c=>{let ss=db.sales.filter(x=>x.client===c.id),sum=ss.reduce((a,x)=>a+x.qty*x.price,0),d=ss.reduce((a,x)=>a+Math.max(0,x.qty*x.price-x.paid),0);return `<tr><td><b>${esc(c.name)}</b></td><td>${esc(c.phone||'—')}</td><td>${esc(c.city||'—')}</td><td>${money(sum)}</td><td>${money(d)}</td></tr>`}).join('')||'<tr><td colspan="5"><div class="empty">Клієнтів ще немає.</div></td></tr>';
+ $('suppliersBody').innerHTML=db.suppliers.map(s=>{let ps=db.purchases.filter(x=>x.supplier===s.id);return `<tr><td><b>${esc(s.name)}</b></td><td>${esc(s.phone||'—')}</td><td>${esc(s.contact||'—')}</td><td>${money(ps.reduce((a,x)=>a+x.qty*x.price,0))}</td></tr>`}).join('')||'<tr><td colspan="4"><div class="empty">Постачальників ще немає.</div></td></tr>';
+}
+renderAll();
+</script>
+</body>
+</html>
